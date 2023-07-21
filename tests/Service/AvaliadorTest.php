@@ -46,7 +46,7 @@ class AvaliadorTest extends TestCase
         //Act - When
         $this->leiloeiro->avalia($leilao);
 
-        $menorValor = $this->$leiloeiro->getMenorValor();
+        $menorValor = $this->leiloeiro->getMenorValor();
 
         //Assert - Then
         self::assertEquals(1700, $menorValor);
@@ -59,20 +59,21 @@ class AvaliadorTest extends TestCase
      */
     public function testAvaliadorDeveBuscar3MaioresValores(Leilao $leilao)
     {
-        $this->$leiloeiro->avalia($leilao);
+        $this->leiloeiro->avalia($leilao);
 
-        $maiores = $this->$leiloeiro->getMaioresLances();
+        $maiores = $this->leiloeiro->getMaioresLances();
         static::assertCount(3, $maiores);
-        static::assertEquals(2000, $maiores[0]->getValor());
-        static::assertEquals(1700, $maiores[1]->getValor());
-        static::assertEquals(1500, $maiores[2]->getValor());
+        static::assertEquals(2500, $maiores[0]->getValor());
+        static::assertEquals(2000, $maiores[1]->getValor());
+        static::assertEquals(1700, $maiores[2]->getValor());
     }
 
     /* ------ DADOS ------ */
     public function leilaoEmOrdemCrescente()
     {
         echo "Criando em ordem crescente" . PHP_EOL;
-        $leilao = new Leilao('Fiat 147 0KM');
+        $leilao = new Leilao('Fiat 147 0km');
+
         $maria = new Usuario('Maria');
         $joao = new Usuario('João');
         $ana = new Usuario('Ana');
@@ -82,14 +83,15 @@ class AvaliadorTest extends TestCase
         $leilao->recebeLance(new Lance($maria, 2500));
 
         return [
-            [$leilao]
+            'ordem-crescente' => [$leilao]
         ];
     }
 
     public function leilaoEmOrdemDecrescente()
     {
         echo "Criando em ordem decrescente" . PHP_EOL;
-        $leilao = new Leilao('Fiat 147 0KM');
+        $leilao = new Leilao('Fiat 147 0km');
+
         $maria = new Usuario('Maria');
         $joao = new Usuario('João');
         $ana = new Usuario('Ana');
@@ -99,14 +101,14 @@ class AvaliadorTest extends TestCase
         $leilao->recebeLance(new Lance($ana, 1700));
 
         return [
-            [$leilao]
+            'ordem-decrescente' => [$leilao]
         ];
     }
-
     public function leilaoEmOrdemAleatoria()
     {
         echo "Criando em ordem aleatória" . PHP_EOL;
-        $leilao = new Leilao('Fiat 147 0KM');
+        $leilao = new Leilao('Fiat 147 0km');
+
         $maria = new Usuario('Maria');
         $joao = new Usuario('João');
         $ana = new Usuario('Ana');
@@ -116,7 +118,7 @@ class AvaliadorTest extends TestCase
         $leilao->recebeLance(new Lance($ana, 1700));
 
         return [
-            [$leilao]
+            'ordem-aleatoria' => [$leilao]
         ];
     }
 
