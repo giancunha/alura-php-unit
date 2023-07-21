@@ -15,17 +15,15 @@ class AvaliadorTest extends TestCase
 
     protected function setUp(): void
     {
-        echo "Executando setUp" . PHP_EOL;
         $this->leiloeiro = new Avaliador();
     }
-
 
     /**
      * @dataProvider leilaoEmOrdemAleatoria
      * @dataProvider leilaoEmOrdemCrescente
      * @dataProvider leilaoEmOrdemDecrescente
      */
-    public function testAvaliadorDeveEncontrarOMaiorValorDeLance(Leilao $leilao)
+    public function testAvaliadorDeveEncontrarOMaiorValorDeLances(Leilao $leilao)
     {
         //Act - When
         $this->leiloeiro->avalia($leilao);
@@ -69,9 +67,8 @@ class AvaliadorTest extends TestCase
     }
 
     /* ------ DADOS ------ */
-    public function leilaoEmOrdemCrescente()
+    public static function leilaoEmOrdemCrescente()
     {
-        echo "Criando em ordem crescente" . PHP_EOL;
         $leilao = new Leilao('Fiat 147 0km');
 
         $maria = new Usuario('Maria');
@@ -87,9 +84,8 @@ class AvaliadorTest extends TestCase
         ];
     }
 
-    public function leilaoEmOrdemDecrescente()
+    public static function leilaoEmOrdemDecrescente()
     {
-        echo "Criando em ordem decrescente" . PHP_EOL;
         $leilao = new Leilao('Fiat 147 0km');
 
         $maria = new Usuario('Maria');
@@ -104,9 +100,9 @@ class AvaliadorTest extends TestCase
             'ordem-decrescente' => [$leilao]
         ];
     }
-    public function leilaoEmOrdemAleatoria()
+
+    public static function leilaoEmOrdemAleatoria()
     {
-        echo "Criando em ordem aleatória" . PHP_EOL;
         $leilao = new Leilao('Fiat 147 0km');
 
         $maria = new Usuario('Maria');
@@ -119,15 +115,6 @@ class AvaliadorTest extends TestCase
 
         return [
             'ordem-aleatoria' => [$leilao]
-        ];
-    }
-
-    public function entregaLeiloes()
-    {
-        return [
-            'ordem-crescente' => [$this->leilaoEmOrdemCrescente()],
-            'ordem-decrescente' => [$this->leilaoEmOrdemDecrescente()],
-            'ordem-aleatoria' => [$this->leilaoEmOrdemAleatoria()]
         ];
     }
 }
