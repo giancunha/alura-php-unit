@@ -21,6 +21,12 @@ class Leilao
             throw new \DomainException('Usuário não pode propor 2 lances consecutivos');
         }
 
+        $totalLancesUsuario = $this
+            ->quantidadeLancesPorUsuario($lance->getUsuario());
+        if ($totalLancesUsuario >= 5) {
+            throw new \DomainException('Usuário não pode propor mais de 5 lances por leilão');
+        }
+
         $this->lances[] = $lance;
     }
 
@@ -40,5 +46,23 @@ class Leilao
     {
         $ultimoLance = $this->lances[array_key_last($this->lances)];
         return $lance->getUsuario() == $ultimoLance->getUsuario();
+    }
+
+    /**
+     * @param Usuario $usuario
+     * @return Lance|mixed
+     */
+    private function quantidadeLancesPorUsuario(Usuario $usuario)
+    {
+        return array_reduce(
+            $this->lances,
+            function (int $totalAcumulado, Lance $lanceAtual) use ($usuario) {
+                if ($lanceAtual->getUsuario() == $usuario) {
+                    return $totalAcumulado + 1;
+                }
+                return $totalAcumulado;
+            },
+            0
+        );
     }
 }
