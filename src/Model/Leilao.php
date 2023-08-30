@@ -17,6 +17,10 @@ class Leilao
 
     public function recebeLance(Lance $lance)
     {
+        if (!empty($this->lances) && $this->ehDoUltimoUsuario($lance)) {
+            throw new \DomainException('Usuário não pode propor 2 lances consecutivos');
+        }
+
         $this->lances[] = $lance;
     }
 
@@ -26,5 +30,15 @@ class Leilao
     public function getLances(): array
     {
         return $this->lances;
+    }
+
+    /**
+     * @param Lance $lance
+     * @return bool
+     */
+    private function ehDoUltimoUsuario(Lance $lance): bool
+    {
+        $ultimoLance = $this->lances[array_key_last($this->lances)];
+        return $lance->getUsuario() == $ultimoLance->getUsuario();
     }
 }
