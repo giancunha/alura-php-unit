@@ -1,12 +1,11 @@
 <?php
 
-namespace Alura\Leilao\Tests\Model;
+namespace Alura\Leilao\Tests\Service;
 
-use Alura\Leilao\Model\Leilao;
 use Alura\Leilao\Model\Lance;
+use Alura\Leilao\Model\Leilao;
 use Alura\Leilao\Model\Usuario;
 use Alura\Leilao\Service\Avaliador;
-use PhpParser\Node\Expr\FuncCall;
 use PHPUnit\Framework\TestCase;
 
 class AvaliadorTest extends TestCase
@@ -25,12 +24,12 @@ class AvaliadorTest extends TestCase
      */
     public function testAvaliadorDeveEncontrarOMaiorValorDeLances(Leilao $leilao)
     {
-        //Act - When
+        // Act - When
         $this->leiloeiro->avalia($leilao);
 
         $maiorValor = $this->leiloeiro->getMaiorValor();
 
-        //Assert - Then
+        // Assert - Then
         self::assertEquals(2500, $maiorValor);
     }
 
@@ -39,14 +38,14 @@ class AvaliadorTest extends TestCase
      * @dataProvider leilaoEmOrdemCrescente
      * @dataProvider leilaoEmOrdemDecrescente
      */
-    public function testAvaliadorDeveEncontrarOMenorValorDeLancesEm(Leilao $leilao)
+    public function testAvaliadorDeveEncontrarOMenorValorDeLances(Leilao $leilao)
     {
-        //Act - When
+        // Act - When
         $this->leiloeiro->avalia($leilao);
 
         $menorValor = $this->leiloeiro->getMenorValor();
 
-        //Assert - Then
+        // Assert - Then
         self::assertEquals(1700, $menorValor);
     }
 
@@ -66,10 +65,10 @@ class AvaliadorTest extends TestCase
         static::assertEquals(1700, $maiores[2]->getValor());
     }
 
-    /* ------ DADOS ------ */
-    public static function leilaoEmOrdemCrescente()
+    /* ------ DADOS ------- */
+    public function leilaoEmOrdemCrescente()
     {
-        $leilao = new Leilao('Fiat 147 0km');
+        $leilao = new Leilao('Fiat 147 0KM');
 
         $maria = new Usuario('Maria');
         $joao = new Usuario('João');
@@ -84,9 +83,9 @@ class AvaliadorTest extends TestCase
         ];
     }
 
-    public static function leilaoEmOrdemDecrescente()
+    public function leilaoEmOrdemDecrescente()
     {
-        $leilao = new Leilao('Fiat 147 0km');
+        $leilao = new Leilao('Fiat 147 0KM');
 
         $maria = new Usuario('Maria');
         $joao = new Usuario('João');
@@ -101,9 +100,9 @@ class AvaliadorTest extends TestCase
         ];
     }
 
-    public static function leilaoEmOrdemAleatoria()
+    public function leilaoEmOrdemAleatoria()
     {
-        $leilao = new Leilao('Fiat 147 0km');
+        $leilao = new Leilao('Fiat 147 0KM');
 
         $maria = new Usuario('Maria');
         $joao = new Usuario('João');
