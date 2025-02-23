@@ -1,6 +1,6 @@
 <?php
 
-namespace Alura\Leilao\Tests\Models;
+namespace Alura\Leilao\Tests\Model;
 
 use Alura\Leilao\Model\Lance;
 use Alura\Leilao\Model\Leilao;
@@ -9,20 +9,15 @@ use PHPUnit\Framework\TestCase;
 
 class LeilaoTest extends TestCase
 {
+    public function testLeilaoNaoDeveReceberLancesRepetidos()
+    {
+        $this->expectException(\DomainException::class);
+        $this->expectExceptionMessage('Usuário não pode propor 2 lances consecutivos');
+        $leilao = new Leilao('Variante');
+        $ana = new Usuario('Ana');
 
-    /**
-     * @dataProvider geraLances
-     */
-    public function testLeilaoNaoDeveReceberLancesRepetidos(
-        int $qtdLances,
-        Leilao $leilao,
-        array $valores
-    ) {
-        static::assertCount($qtdLances, $leilao->getLances());
-
-        foreach ($valores as $i => $valorEsperado) {
-            static::assertEquals($valorEsperado, $leilao->getLances()[$i]->getValor());
-        }
+        $leilao->recebeLance(new Lance($ana, 1000));
+        $leilao->recebeLance(new Lance($ana, 1500));
     }
 
     public function testLeilaoNaoDeveAceitarMaisDe5LancesPorUsuario()
@@ -46,9 +41,6 @@ class LeilaoTest extends TestCase
         $leilao->recebeLance(new Lance($maria, 5500));
 
         $leilao->recebeLance(new Lance($joao, 6000));
-
-        static::assertCount(5, $leilao->getLances());
-        static::assertEquals(5500, $leilao->getLances()[4]->getValor());
     }
 
     /**
@@ -80,7 +72,7 @@ class LeilaoTest extends TestCase
 
         return [
             '2-lances' => [2, $leilaoCom2Lances, [1000, 2000]],
-            '1-lance' => [1, $leilaoCom1Lance, [5000]],
+            '1-lance' => [1, $leilaoCom1Lance, [5000]]
         ];
     }
 }

@@ -8,11 +8,14 @@ class Leilao
     private $lances;
     /** @var string */
     private $descricao;
+    /** @var bool */
+    private $finalizado;
 
     public function __construct(string $descricao)
     {
         $this->descricao = $descricao;
         $this->lances = [];
+        $this->finalizado = false;
     }
 
     public function recebeLance(Lance $lance)
@@ -38,6 +41,16 @@ class Leilao
         return $this->lances;
     }
 
+    public function finaliza()
+    {
+        $this->finalizado = true;
+    }
+
+    public function estaFinalizado(): bool
+    {
+        return $this->finalizado;
+    }
+
     /**
      * @param Lance $lance
      * @return bool
@@ -48,21 +61,20 @@ class Leilao
         return $lance->getUsuario() == $ultimoLance->getUsuario();
     }
 
-    /**
-     * @param Usuario $usuario
-     * @return Lance|mixed
-     */
-    private function quantidadeLancesPorUsuario(Usuario $usuario)
+    private function quantidadeLancesPorUsuario(Usuario $usuario): int
     {
-        return array_reduce(
+        $totalLancesUsuario = array_reduce(
             $this->lances,
             function (int $totalAcumulado, Lance $lanceAtual) use ($usuario) {
                 if ($lanceAtual->getUsuario() == $usuario) {
                     return $totalAcumulado + 1;
                 }
+
                 return $totalAcumulado;
             },
             0
         );
+
+        return $totalLancesUsuario;
     }
 }
